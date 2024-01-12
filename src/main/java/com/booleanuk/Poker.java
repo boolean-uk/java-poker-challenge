@@ -1,18 +1,87 @@
 package com.booleanuk;
-
+import java.util.Arrays;
 public class Poker {
     // Core
+    String[] list = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
     public String[] winningPair(String[] firstHand, String[] secondHand) {
         // Implement the winningPair logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        String[] winner = {};
+        if (!firstHand[0].equals(firstHand[1]) && !secondHand[0].equals(secondHand[1])) {
+            winner = new String[]{};
+
+        } else if (!firstHand[0].equals(firstHand[1])) {
+            if (secondHand[0].equals(secondHand[1])){
+                winner = new String[]{secondHand[0], secondHand[1]};
+
+            }
+        } else if (firstHand[0].equals(firstHand[1])) {
+            if (!secondHand[0].equals(secondHand[1])) {
+                winner = new String[]{firstHand[0], firstHand[1]};
+
+            } else {
+                int position1 = -1;
+                for (int i = 0; i < list.length; i++) {
+                    if (list[i].equals(firstHand[0])) {
+                        position1 = i;
+                        break;
+                    }
+                }
+                int position2 = -1;
+                for (int i = 0; i < list.length; i++) {
+                    if (list[i].equals(secondHand[0])) {
+                        position2 = i;
+                        break;
+                    }
+                }
+                if(position1 < position2){
+                    winner = new String[]{secondHand[0], secondHand[1]};
+
+                } else {
+                    winner = new String[]{firstHand[0], firstHand[1]};
+
+                }
+            }
+        }
+        return winner;
     }
 
     // Extension 1
     public String[] winningPairFromArray(String[][] hands) {
         // Implement the winningPairFromArray logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        String[] winner;
+
+        int[] scores = new int[hands.length];
+        boolean equals = false;
+        for (int i = 0; i < hands.length; i++) {
+            if (hands[i][0].equals(hands[i][1])) {
+                equals = true;
+                for (int j = 0; j < list.length; j++) {
+                    if (list[j].equals(hands[i][0])) {
+                        scores[i] = j;
+                        break;
+                    }
+                }
+            } else {
+                equals = false;
+                scores[i] = -1;
+            }
+        }
+        int max = scores[0];
+        int index = 0;
+        for (int i = 0; i < hands.length; i++) {
+            if (scores[i] > max) {
+                index = i;
+                max = scores[i];
+            }
+        }
+        if (equals) {
+            winner = new String[]{hands[index][0], hands[index][1]};
+        } else {
+            winner = new String[]{};
+        }
+        return winner;
     }
 
     // Extension 2
