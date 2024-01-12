@@ -59,7 +59,7 @@ public class Poker {
                 equals = true;
                 for (int j = 0; j < list.length; j++) {
                     if (list[j].equals(hands[i][0])) {
-                        scores[i] = i;
+                        scores[i] = j;
                         break;
                     }
                 }
