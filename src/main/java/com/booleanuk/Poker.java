@@ -1,7 +1,9 @@
 package com.booleanuk;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+
 
 public class Poker {
 
@@ -41,6 +43,7 @@ public class Poker {
 
         String[] winningPair = new String[]{};
         ArrayList<String> listOfPairValues = new ArrayList<>();
+        String higestCard;
 
         for (String[] hand : hands){
             if(isPair(hand)){
@@ -48,7 +51,7 @@ public class Poker {
             }
         }
 
-        String higestCard = getHigestCard(listOfPairValues);
+        higestCard = getHigestCard(listOfPairValues);
 
         if (!listOfPairValues.isEmpty()){
             winningPair = new String[]{higestCard, higestCard};
@@ -61,7 +64,33 @@ public class Poker {
     public String[] winningThreeCardHand(String[][] hands) {
         // Implement the winningThreeCardHand logic here and return the array containing the winning hand to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+
+        String[] winningHand = new String[]{};
+        ArrayList<String> listOfTripleValues = new ArrayList<>();
+        HashMap<String, String[]> mapOfPairs = new HashMap<>();
+
+
+        for (String[] hand : hands){
+
+            if(amountOfIdenticalCards(hand) == 3){
+                listOfTripleValues.add(hand[0]);
+            }
+            else if(amountOfIdenticalCards(hand) == 2){
+                mapOfPairs.put(getCardOfPair(hand), hand);
+            }
+
+        }
+
+        if (!listOfTripleValues.isEmpty()){
+            winningHand = new String[3];
+            Arrays.fill(winningHand, getHigestCard(listOfTripleValues));
+        } else if (!mapOfPairs.isEmpty()){
+            ArrayList<String> listOfPairValues2 = new ArrayList<>(mapOfPairs.keySet());
+            String high = getHigestCard(listOfPairValues2);
+            winningHand = mapOfPairs.get(high);
+        }
+
+        return winningHand;
     }
 
     // Extension 3
@@ -69,6 +98,32 @@ public class Poker {
         // Completely replace this method with suitable methods to solve Extension 3
         // You will also need to add the relevant tests to Extension3Test.java
         return "Replace this method with your own methods and tests";
+    }
+
+    public String getCardOfPair(String[] hand){
+        String resCard = "";
+        String firstCard = hand[0];
+        String previousCard = "";
+        for (String card: hand){
+            if(isPair(new String[]{previousCard, card}) || isPair(new String[]{firstCard, card})){
+                resCard = card;
+            }
+            previousCard = card;
+        }
+        return resCard;
+    }
+
+    public int amountOfIdenticalCards(String[] hand){
+        int amount = 0;
+        String firstCard = hand[0];
+        String previousCard = "";
+        for (String card: hand){
+            if(isPair(new String[]{previousCard, card}) || isPair(new String[]{firstCard, card})){
+                amount +=1;
+            }
+            previousCard = card;
+        }
+        return amount;
     }
 
     public boolean isPair(String[] hand){
