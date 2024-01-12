@@ -9,6 +9,7 @@ import static java.util.Collections.max;
 public class Poker {
 
     HashMap<String, Integer> cards = new HashMap<String, Integer>() {{
+        put("0", 0);
         put("1", 1);
         put("2", 2);
         put("3", 3);
@@ -102,7 +103,7 @@ public class Poker {
         } else {
             String[] highestPair = new String[] {"0","0"};
             for(String[] hand : hands) {
-                if(getHighestPairThreeFromHand(hand) > parseInt((highestPair[0]))) {
+                if(getHighestPairThreeFromHand(hand) > cards.get((highestPair[0]))) {
                     highestPair = hand;
                 }
             }
