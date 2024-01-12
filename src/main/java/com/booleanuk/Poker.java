@@ -50,7 +50,38 @@ public class Poker {
     public String[] winningPairFromArray(String[][] hands) {
         // Implement the winningPairFromArray logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        String[] winner;
+
+        int[] scores = new int[hands.length];
+        boolean equals = false;
+        for (int i = 0; i < hands.length; i++) {
+            if (hands[i][0].equals(hands[i][1])) {
+                equals = true;
+                for (int j = 0; j < list.length; j++) {
+                    if (list[j].equals(hands[i][0])) {
+                        scores[i] = i;
+                        break;
+                    }
+                }
+            } else {
+                equals = false;
+                scores[i] = -1;
+            }
+        }
+        int max = scores[0];
+        int index = 0;
+        for (int i = 0; i < hands.length; i++) {
+            if (scores[i] > max) {
+                index = i;
+                max = scores[i];
+            }
+        }
+        if (equals) {
+            winner = new String[]{hands[index][0], hands[index][1]};
+        } else {
+            winner = new String[]{};
+        }
+        return winner;
     }
 
     // Extension 2
