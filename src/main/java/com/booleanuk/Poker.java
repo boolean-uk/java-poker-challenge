@@ -61,9 +61,44 @@ public class Poker {
 
     // Extension 2
     public String[] winningThreeCardHand(String[][] hands) {
-        // Implement the winningThreeCardHand logic here and return the array containing the winning hand to make the tests pass.
-        // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        int highestPairValue = 0, highestThreeOfKindValue = 0;
+        int currentValue;
+        String[] highestPairHand = new String[]{};
+        String[] highestThreeOfPairHand = new String[]{};
+
+        for(String[] hand: hands) {
+            if(hand.length == 2 && highestThreeOfKindValue == 0) {
+                if (hand[0].equals(hand[1])) {
+                    currentValue = getCardValue(hand[0]);
+                    if (currentValue > highestPairValue) {
+                        highestPairValue = currentValue;
+                        highestPairHand = hand;
+                    }
+                }
+            } else if(hand.length == 3){
+                if(hand[0].equals(hand[1]) && hand[0].equals(hand[2])) {
+                    currentValue = getCardValue(hand[0]);
+                    if (currentValue > highestThreeOfKindValue) {
+                        highestThreeOfKindValue = currentValue;
+                        highestThreeOfPairHand = hand;
+                    }
+                } else if(hand[0].equals(hand[1]) || hand[0].equals(hand[2])) {
+                    currentValue = getCardValue(hand[0]);
+                    if (currentValue > highestPairValue) {
+                        highestPairValue = currentValue;
+                        highestPairHand = hand;
+                    }
+                } else if(hand[1].equals(hand[2])) {
+                    currentValue = getCardValue(hand[1]);
+                    if (currentValue > highestPairValue) {
+                        highestPairValue = currentValue;
+                        highestPairHand = hand;
+                    }
+                }
+            }
+        }
+
+        return highestThreeOfKindValue == 0? highestPairHand : highestThreeOfPairHand;
     }
 
     // Extension 3
