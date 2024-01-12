@@ -29,10 +29,15 @@ public class Poker {
         // Implement the winningPair logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
 
-        String[] winningPair;
+        String[] winningPair = new String[2];
         boolean pairFirst = false, pairSecond = false;
-        if (firstHand[0].equals(firstHand[1])) pairFirst = true;
-        if (secondHand[0].equals(secondHand[1])) pairSecond = true;
+
+        if (firstHand[0].equals(firstHand[1])){
+            pairFirst = true;
+        }
+        if (secondHand[0].equals(secondHand[1])){
+            pairSecond = true;
+        }
 
         if (pairFirst && pairSecond){
             if (valueMap.get(firstHand[0]) < valueMap.get(secondHand[0])){
@@ -46,7 +51,7 @@ public class Poker {
             winningPair = secondHand;
         }
 
-        return new String[0];
+        return Arrays.equals(winningPair, new String[2])  ? new String[0] : winningPair;
     }
 
     // Extension 1
@@ -54,12 +59,12 @@ public class Poker {
         // Implement the winningPairFromArray logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
 
-        String[] winningPair = new String[]{"0", "0"};
+        String[] winningPair = {"0", "0"};
         ArrayList<Integer> pairIndices = new ArrayList<>();
 
         int i = 0;
         for (String[] hand : hands){
-            if (hand[0].equals(hand[1])) {
+            if (Arrays.stream(hand).distinct().count() == 1) {
                 pairIndices.add(i++);
             }
         }
@@ -77,8 +82,40 @@ public class Poker {
     public String[] winningThreeCardHand(String[][] hands) {
         // Implement the winningThreeCardHand logic here and return the array containing the winning hand to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+
+        String[] winningHand = {"0", "0", "0"};
+        ArrayList<Integer> pairs = new ArrayList<>();
+        ArrayList<Integer> threeOfAKinds = new ArrayList<>();
+
+        int i = 0;
+        for (String[] hand : hands){
+            long distinctCount = Arrays.stream(hand).distinct().count();
+
+            if (hand.length == 3 && distinctCount == 1) {
+                threeOfAKinds.add(i);
+            } else if (hand.length == 3 && distinctCount == 2) {
+                pairs.add(i);
+            } else if (hand.length == 2 && distinctCount == 1) {
+                pairs.add(i);
+            }
+            i++;
+        }
+        for (int threeOfAKind : threeOfAKinds) {
+            if (valueMap.get(hands[threeOfAKind][0]) > valueMap.get(winningHand[0])) {
+                winningHand = hands[threeOfAKind].clone();
+            }
+        }
+
+        if (Arrays.equals(winningHand, new String[]{"0", "0", "0"})) {
+            for (int pair : pairs) {
+                if (valueMap.get(hands[pair][0]) > valueMap.get(winningHand[0])) {
+                    winningHand = hands[pair].clone();
+                }
+            }
+        }
+        return Arrays.equals(winningHand, new String[]{"0", "0", "0"}) ? new String[0] : winningHand;
     }
+
 
     // Extension 3
     public String extensionThreeMethods() {
