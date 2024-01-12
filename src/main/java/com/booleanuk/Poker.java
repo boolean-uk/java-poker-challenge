@@ -1,6 +1,7 @@
 package com.booleanuk;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 public class Poker {
@@ -17,7 +18,8 @@ public class Poker {
             Map.entry("10", 10),
             Map.entry("J", 11),
             Map.entry("Q", 12),
-            Map.entry("K", 15)
+            Map.entry("K", 13),
+            Map.entry("0", 0)
     );
     public Poker(){
 
@@ -51,7 +53,24 @@ public class Poker {
     public String[] winningPairFromArray(String[][] hands) {
         // Implement the winningPairFromArray logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+
+        String[] winningPair = new String[]{"0", "0"};
+        ArrayList<Integer> pairIndices = new ArrayList<>();
+
+        int i = 0;
+        for (String[] hand : hands){
+            if (hand[0].equals(hand[1])) {
+                pairIndices.add(i++);
+            }
+        }
+
+        for (int pair : pairIndices){
+            if (valueMap.get(hands[pair][0]) > valueMap.get(winningPair[0])){
+                winningPair = hands[pair];
+            }
+        }
+
+        return Arrays.equals(winningPair, new String[]{"0", "0"}) ? new String[0] : winningPair;
     }
 
     // Extension 2
