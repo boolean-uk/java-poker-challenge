@@ -1,11 +1,36 @@
 package com.booleanuk;
 
+import java.util.HashMap;
+
 public class Poker {
     // Core
+    HashMap<String, Integer> pointsMap;
+    String[] cards = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+
+    public Poker(){
+        pointsMap = new HashMap<>();
+        int idx = 0;
+        for (int i = 0; i < 13; i++){
+            pointsMap.put(cards[i], i+2);
+        }
+    }
     public String[] winningPair(String[] firstHand, String[] secondHand) {
         // Implement the winningPair logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        boolean pairOne = firstHand[0].equals(firstHand[1]);
+        boolean pairTwo = secondHand[0].equals(secondHand[1]);
+
+        if (pairOne && pairTwo){
+            if (pointsMap.get(firstHand[0]) > pointsMap.get(secondHand[0]))
+                return firstHand;
+            else
+                return secondHand;
+        }
+        else if (pairOne)
+            return firstHand;
+        else if (pairTwo)
+            return secondHand;
+        return new String[]{};
     }
 
     // Extension 1
