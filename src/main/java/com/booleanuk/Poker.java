@@ -1,5 +1,7 @@
 package com.booleanuk;
 
+import java.util.Arrays;
+
 public class Poker {
     String[] ranks;
     int[] values;
@@ -12,11 +14,11 @@ public class Poker {
     public String[] winningPair(String[] firstHand, String[] secondHand) {
         // Implement the winningPair logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
-        if (!hasPair(firstHand) && !hasPair(secondHand)) {
+        if (!isPair(firstHand) && !isPair(secondHand)) {
             return new String[]{};
-        } else if (!hasPair(firstHand)) {
+        } else if (!isPair(firstHand)) {
             return secondHand;
-        } else if (!hasPair(secondHand)) {
+        } else if (!isPair(secondHand)) {
             return firstHand;
         }
 
@@ -41,7 +43,7 @@ public class Poker {
             return new String[]{};
         }
 
-        int winnerIndex = getHighestScoreIndex(scores);
+        int winnerIndex = getHighestIndex(scores);
         return hands[winnerIndex];
     }
 
@@ -49,21 +51,39 @@ public class Poker {
     public String[] winningThreeCardHand(String[][] hands) {
         // Implement the winningThreeCardHand logic here and return the array containing the winning hand to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        int[] scores = getScoresFromHandsArray(hands);
+        int highestScore = getHighestScore(scores);
+
+        // FIXME Wont always work
+        // TODO Get two different scores[] one for pairs and one for trios
+        for (String[] hand : hands) {
+            System.out.println(Arrays.toString(hand));
+            if (isThree(hand)) {
+                return hand;
+            }
+        }
+
+        if (highestScore == 0) {
+            return new String[]{};
+        }
+
+        int winnerIndex = getHighestIndex(scores);
+        return hands[winnerIndex];
     }
 
     // Extension 3
-    public String extensionThreeMethods() {
+    public String[] extensionThreeMethods(String[][] hands) {
         // Completely replace this method with suitable methods to solve Extension 3
         // You will also need to add the relevant tests to Extension3Test.java
-        return "Replace this method with your own methods and tests";
+        // Rerun code from ext 2
+        return winningThreeCardHand(hands);
     }
 
     private int[] getScoresFromHandsArray(String[][] hands) {
         int[] scores = new int[hands.length];
 
         for (int i = 0; i < hands.length; i++) {
-            if (!hasPair(hands[i])) {
+            if (!isPair(hands[i])) {
                 // Set score to 0 if hand has no pair
                 scores[i] = 0;
             } else {
@@ -74,7 +94,7 @@ public class Poker {
         return scores;
     }
 
-    private int getHighestScoreIndex(int[] scores) {
+    private int getHighestIndex(int[] scores) {
         int maxIndex = 0;
         int maxValue = scores[0];
 
@@ -109,7 +129,7 @@ public class Poker {
         return values[index];
     }
 
-    private boolean hasPair(String[] hand) {
+    private boolean isPair(String[] hand) {
         int len = hand.length;
 
         for (int i = 0; i < len - 1; i++) {
@@ -120,5 +140,19 @@ public class Poker {
             }
         }
         return false;
+    }
+
+    private boolean isThree(String[] hand) {
+        if (hand.length != 3) {
+            return false;
+        }
+        String firstElement = hand[0];
+
+        for (int i = 1; i < hand.length; i++) {
+            if (!firstElement.equals(hand[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 }
