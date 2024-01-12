@@ -3,8 +3,6 @@ package com.booleanuk;
 public class Poker {
     // Core
     public String[] winningPair(String[] firstHand, String[] secondHand) {
-        // Implement the winningPair logic here and return the array containing the winning pair to make the tests pass.
-        // You can replace the following return value with something appropriate
         if(firstHand[0].equals(firstHand[1])) {
             if(secondHand[0].equals(secondHand[1])) {
                 int firstHandValue = getCardValue(firstHand[0]);
@@ -41,8 +39,6 @@ public class Poker {
 
     // Extension 1
     public String[] winningPairFromArray(String[][] hands) {
-        // Implement the winningPairFromArray logic here and return the array containing the winning pair to make the tests pass.
-        // You can replace the following return value with something appropriate
         int highestValue = 0, currentValue;
         String[] highestHand = new String[]{};
 
@@ -64,7 +60,7 @@ public class Poker {
         int highestPairValue = 0, highestThreeOfKindValue = 0;
         int currentValue;
         String[] highestPairHand = new String[]{};
-        String[] highestThreeOfPairHand = new String[]{};
+        String[] highestThreeOfKindHand = new String[]{};
 
         for(String[] hand: hands) {
             if(hand.length == 2 && highestThreeOfKindValue == 0) {
@@ -80,7 +76,7 @@ public class Poker {
                     currentValue = getCardValue(hand[0]);
                     if (currentValue > highestThreeOfKindValue) {
                         highestThreeOfKindValue = currentValue;
-                        highestThreeOfPairHand = hand;
+                        highestThreeOfKindHand = hand;
                     }
                 } else if(hand[0].equals(hand[1]) || hand[0].equals(hand[2])) {
                     currentValue = getCardValue(hand[0]);
@@ -98,7 +94,7 @@ public class Poker {
             }
         }
 
-        return highestThreeOfKindValue == 0? highestPairHand : highestThreeOfPairHand;
+        return highestThreeOfKindValue == 0? highestPairHand : highestThreeOfKindHand;
     }
 
     // Extension 3
