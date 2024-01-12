@@ -1,5 +1,6 @@
 package com.booleanuk;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -56,7 +57,41 @@ public class Poker {
     public String[] winningPairFromArray(String[][] hands) {
         // Implement the winningPairFromArray logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        this.values = new HashMap<>();
+        this.values.put("A", 14);
+        this.values.put("K", 13);
+        this.values.put("Q", 12);
+        this.values.put("J", 11);
+        this.values.put("10", 10);
+        this.values.put("9", 9);
+        this.values.put("8", 8);
+        this.values.put("7", 7);
+        this.values.put("6", 6);
+        this.values.put("5", 5);
+        this.values.put("4", 4);
+        this.values.put("3", 3);
+        this.values.put("2", 2);
+
+        System.out.println((hands[0][0]));
+        System.out.println(hands.length);
+        //Check for pairs
+        int index = 0;
+        int highestPoint = 0;
+        //Comparing pairs for pairs, if its bigger than previous, overwrite
+        for (int i = 0; i < hands.length; i++) {
+            if(hands[i][0].equals(hands[i][1])){
+                if(values.get(hands[i][0]) > highestPoint){
+                    highestPoint = values.get(hands[i][0]);
+                    index = i;
+                }
+            }
+        }
+        System.out.println("s"+ hands[index]);
+        if (highestPoint != 0){
+            return hands[index];
+        } else return new String[]{};
+
+
     }
 
     // Extension 2
@@ -75,8 +110,9 @@ public class Poker {
 
     public static void main(String[] args) {
         Poker poker = new Poker();
-        poker.winningPair(new String[]{"Q","Q"}, new String[]{"K","J"});
-        poker.winningPair(new String[]{"Q","Q"}, new String[]{"K","K"});
+        //poker.winningPair(new String[]{"Q","Q"}, new String[]{"K","J"});
+        //poker.winningPair(new String[]{"Q","Q"}, new String[]{"K","K"});
+        poker.winningPairFromArray(new String[][]{new String[]{"9", "9"}, new String[]{"6", "6"}, new String[]{"7", "7"}, new String[]{"3", "3"}});
 
     }
 }
