@@ -1,6 +1,9 @@
 package com.booleanuk;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.Stack;
 
 public class Poker {
     HashMap<String, Integer> bindings;
@@ -10,6 +13,7 @@ public class Poker {
 
     public HashMap<String, Integer> populateMap() {
         HashMap<String, Integer> retMap = new HashMap<>();
+        retMap.put("0", 0);
         retMap.put("2", 2);
         retMap.put("3", 3);
         retMap.put("4", 4);
@@ -80,7 +84,64 @@ public class Poker {
     public String[] winningThreeCardHand(String[][] hands) {
         // Implement the winningThreeCardHand logic here and return the array containing the winning hand to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        Stack<String[]> noOfKind = new Stack<>();
+        Stack<String[]> twoOfKind = new Stack<>();
+        Stack<String[]> threeOfKind = new Stack<>();
+
+        // Check to see how many of each cardinality, thus able to ignore some hands
+        for(String[] hand : hands) {
+            if (typeOfHand(hand) == "noOfKind") {
+                noOfKind.push(hand);
+            } else if (typeOfHand(hand) == "twoOfKind") {
+                twoOfKind.push(hand);
+            } else if (typeOfHand(hand) == "threeOfKind") {
+                threeOfKind.push(hand);
+            } else {
+                System.exit(0);
+            }
+        }
+
+        if (!threeOfKind.isEmpty()) {
+            return bestHand(threeOfKind);
+        } else if (!twoOfKind.isEmpty()) {
+            return bestHand(twoOfKind);
+        } else return new String[]{};
+
+    }
+
+    // Helper method for Extension 2 to return what type of hand
+    public String typeOfHand(String[] hand) {
+        if (hand.length == 2) {
+            if (hand[0] == hand[1]) {
+                return "twoOfKind";
+            }
+        } else if (hand.length == 3) {
+            if (hand[0] == hand[1] && hand[1] == hand[2]) {
+                return "threeOfKind";
+            } else if ((hand[0] == hand[1]) || (hand[0] == hand[2]) || (hand[1] == hand[2])) {
+                return "twoOfKind";
+            } else {
+                return "noOfKind";
+            }
+        }
+        return "noOfKind";
+    }
+
+    // Helper method to find bestHand when removed redundant hands
+    public String[] bestHand(Stack<String[]> relevantHands) {
+        String[] currentWinningHand = new String[]{"0", "0", "0"};
+        if (relevantHands.peek().length == 3 || relevantHands.peek().length == 2) {
+            int size = relevantHands.size();
+            for (int i = 0; i < size; i++) {
+                String[] tmp = relevantHands.pop();
+                int a = bindings.get(tmp[0]);
+                int b = bindings.get(currentWinningHand[0]);
+                if (a > b) {
+                    currentWinningHand = tmp;
+                }
+            }
+        }
+        return currentWinningHand;
     }
 
     // Extension 3
