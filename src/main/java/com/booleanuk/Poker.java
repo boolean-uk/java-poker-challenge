@@ -13,10 +13,10 @@ public class Poker {
         for (int i = 2; i <= 10; i++) {
             cardValues.put(String.valueOf(i), i);
         }
-        cardValues.put("J", 10);
-        cardValues.put("Q", 11);
-        cardValues.put("K", 12);
-        cardValues.put("A", 13);
+        cardValues.put("J", 11);
+        cardValues.put("Q", 12);
+        cardValues.put("K", 13);
+        cardValues.put("A", 14);
 
         return cardValues;
     }
@@ -110,24 +110,48 @@ public class Poker {
                 int card = this.cardValues.getOrDefault(hands[i][j], 0);
                 handsWithValues[i][j] = String.valueOf(card);
             }
-
-            // Check for pairs
-            if (handsWithValues[i].length == 3 && Objects.equals(handsWithValues[i][0], handsWithValues[i][1])) {
-                System.out.println("HAND " + i + " HAS A PAIR");
-                if (currentHighestPair == null ||
-                        Integer.parseInt(currentHighestPair[0]) < Integer.parseInt(handsWithValues[i][0])) {
-                    currentHighestPair = new String[]{handsWithValues[i][0], handsWithValues[i][1]};
-                    winningHandIndex = i;
-                }
-            }
             // Check for three of a kind
-            else if (handsWithValues[i].length == 3 &&
+            if (handsWithValues[i].length == 3 &&
                     Objects.equals(handsWithValues[i][0], handsWithValues[i][1]) &&
                     Objects.equals(handsWithValues[i][1], handsWithValues[i][2])) {
                 System.out.println("HAND " + i + " HAS THREE OF A KIND");
                 if (currentThreeOfAKind == null ||
                         Integer.parseInt(currentThreeOfAKind[0]) < Integer.parseInt(handsWithValues[i][0])) {
                     currentThreeOfAKind = new String[]{handsWithValues[i][0], handsWithValues[i][1], handsWithValues[i][2]};
+                    winningHandIndex = i;
+                }
+            }
+            // Check for pair in hands that have three cards
+            else if (handsWithValues[i].length == 3) {
+                if(Objects.equals(handsWithValues[i][0], handsWithValues[i][1])){
+                    if (currentHighestPair == null ||
+                            Integer.parseInt(currentHighestPair[0]) < Integer.parseInt(handsWithValues[i][0])) {
+                        currentHighestPair = new String[]{handsWithValues[i][0], handsWithValues[i][1]};
+                        winningHandIndex = i;
+                    }
+                }
+                if(Objects.equals(handsWithValues[i][0], handsWithValues[i][2])){
+                    if (currentHighestPair == null ||
+                            Integer.parseInt(currentHighestPair[0]) < Integer.parseInt(handsWithValues[i][0])) {
+                        currentHighestPair = new String[]{handsWithValues[i][0], handsWithValues[i][1]};
+                        winningHandIndex = i;
+                    }
+                }
+                if(Objects.equals(handsWithValues[i][1], handsWithValues[i][2])){
+                    if (currentHighestPair == null ||
+                            Integer.parseInt(currentHighestPair[0]) < Integer.parseInt(handsWithValues[i][1])) {
+                        System.out.println("NEW HIGHEST PAIR IN HAND SIZE OF 3");
+                        currentHighestPair = new String[]{handsWithValues[i][0], handsWithValues[i][1]};
+                        winningHandIndex = i;
+                    }
+                }
+            }
+            // Check for pairs
+            if (handsWithValues[i].length == 2 && Objects.equals(handsWithValues[i][0], handsWithValues[i][1])) {
+                System.out.println("HAND " + i + " HAS A PAIR");
+                if (currentHighestPair == null ||
+                        Integer.parseInt(currentHighestPair[0]) < Integer.parseInt(handsWithValues[i][0])) {
+                    currentHighestPair = new String[]{handsWithValues[i][0], handsWithValues[i][1]};
                     winningHandIndex = i;
                 }
             }
