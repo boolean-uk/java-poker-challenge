@@ -70,41 +70,60 @@ public class Poker {
 
     // Extension 1
     public String[] winningPairFromArray(String[][] hands) {
-        String[] winningPair = new String[]{};
-        int highestPairValue = 0;
+        int numb = 0;
+        ArrayList<Integer> numbers = new ArrayList<>();
+        for(int i = 0; i< hands.length; i++){
+            if (hands[i][0].equals(hands[i][1])){
+                if (hands[i][0].equals("A")){
+                    numb = 14;
+                } else if (hands[i][0].equals("K")) {
+                    numb = 13;
 
-        for (String[] hand : hands) {
-            ArrayList<Integer> intHand = new ArrayList<>();
+                }else if (hands[i][0].equals("Q")) {
+                    numb = 12;
 
-            // Convert card values to integers
-            for (String card : hand) {
-                int cardValue = getCardValue(card);
-                intHand.add(cardValue);
+                }else if (hands[i][0].equals("J")) {
+                    numb = 11;
+
+                }else {
+                    numb = Integer.parseInt(hands[i][0]);
+                }
+                numbers.add(numb);
             }
+        }
+        int temp = 0;
+        for (int i = 0; i<numbers.size(); i++){
+            if (temp<numbers.get(i)){
+                temp=numbers.get(i);
+            }
+        }
+        String temp2="";
+        if (temp==14){
+            temp2="A";
+        } else if (temp==13) {
+            temp2="K";
+        }else if (temp==12) {
+            temp2="Q";
+        }else if (temp==11) {
+            temp2="J";
+        }else {
+            temp2 = Integer.toString(temp);
+        }
 
-            // Check if the hand is a pair and if it's the highest pair so far
-            if (intHand.get(0).equals(intHand.get(1))) {
-                int pairValue = intHand.get(0);
-                if (pairValue > highestPairValue) {
-                    highestPairValue = pairValue;
-                    winningPair = hand;
+        String[] winner = new String[]{};
+
+        for(int i = 0; i< hands.length; i++){
+            for (int j = 0; j< hands[i].length; j++){
+                if (hands[i][j].equals(temp2)){
+                    winner = hands[i];
                 }
             }
         }
-
-        return winningPair;
+        System.out.println(Arrays.asList(winner));
+        // Implement the winningPairFromArray logic here and return the array containing the winning pair to make the tests pass.
+        // You can replace the following return value with something appropriate
+        return winner;
     }
-
-    private int getCardValue(String card) {
-        switch (card) {
-            case "A": return 14;
-            case "K": return 13;
-            case "Q": return 12;
-            case "J": return 11;
-            default:  return Integer.parseInt(card);
-        }
-    }
-
 
 
     // Extension 2
