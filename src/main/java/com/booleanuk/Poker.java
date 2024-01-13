@@ -130,7 +130,63 @@ public class Poker {
     public String[] winningThreeCardHand(String[][] hands) {
         // Implement the winningThreeCardHand logic here and return the array containing the winning hand to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        int numb = 0;
+        ArrayList<Integer> numbers = new ArrayList<>();
+        String[] winner = new String[]{};
+        for(int i = 0; i< hands.length; i++){
+            if (hands[i].length==3 && hands[i][0].equals(hands[i][1]) && hands[i][0].equals(hands[i][2]) ){
+                    return winner = hands[i];
+            }else if (hands[i][0].equals(hands[i][1])){
+                if (hands[i][0].equals("A")){
+                    numb = 14;
+                } else if (hands[i][0].equals("K")) {
+                    numb = 13;
+
+                }else if (hands[i][0].equals("Q")) {
+                    numb = 12;
+
+                }else if (hands[i][0].equals("J")) {
+                    numb = 11;
+
+                }else {
+                    numb = Integer.parseInt(hands[i][0]);
+                }
+                numbers.add(numb);
+            }
+        }
+
+        int temp = 0;
+        for (int i = 0; i<numbers.size(); i++){
+            if (temp<numbers.get(i)){
+                temp=numbers.get(i);
+            }
+        }
+        String temp2="";
+        if (temp==14){
+            temp2="A";
+        } else if (temp==13) {
+            temp2="K";
+        }else if (temp==12) {
+            temp2="Q";
+        }else if (temp==11) {
+            temp2="J";
+        }else {
+            temp2 = Integer.toString(temp);
+        }
+
+
+
+        for(int i = 0; i< hands.length; i++){
+            for (int j = 0; j< hands[i].length; j++){
+                if (hands[i][j].equals(temp2)){
+                    winner = hands[i];
+                }
+            }
+        }
+        System.out.println(Arrays.asList(winner));
+
+        return winner;
+
     }
 
     // Extension 3
