@@ -1,42 +1,68 @@
 package com.booleanuk;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Poker {
     // Core
     public String[] winningPair(String[] firstHand, String[] secondHand) {
-        boolean check = false;
-        boolean check2 = false;
-        int temp = 0;
-        int temp2 = 0;
-        if (firstHand[0].equals(firstHand[1]) && secondHand[0].equals(secondHand[1])){
-            check=true;
-            if (firstHand[0].contains("A")){
-                return firstHand;
-            } else if (secondHand[0].contains("A")) {
-                return secondHand;
+        int change = 0;
+        int change2 = 0;
+        ArrayList<Integer> intFirstHand = new ArrayList<>();
+        ArrayList<Integer> intSecondHand = new ArrayList<>();
+        for (int i = 0; i<secondHand.length; i++){
+
+            if (secondHand[i].equals("A")) {
+                change2= 14;
+            }else if (secondHand[i].equals("K")) {
+                change2= 13;
+            }else if (secondHand[i].equals("Q")) {
+                change2= 12;
+            }else if (secondHand[i].equals("J")) {
+                change2= 11;
+            }else{
+                change2 = Integer.parseInt(secondHand[i]);
             }
-            firstHand[0].contains("A");
-        }else if (firstHand[0].equals(firstHand[1]) && !secondHand[0].equals(secondHand[1])){
+            intSecondHand.add(change2);
+        }
+        for (int i = 0; i<firstHand.length; i++){
+            //String AGE_AS_STRING = Integer.toString(age);
+
+            if (firstHand[i].equals("A")){
+                change= 14;
+            } else if (firstHand[i].equals("K")) {
+                change= 13;
+            }else if (firstHand[i].equals("Q")) {
+                change= 12;
+            }else if (firstHand[i].equals("J")) {
+                change= 11;
+            }else {
+                change = Integer.parseInt(firstHand[i]);
+
+            }
+            intFirstHand.add(change);
+
+        }
+        System.out.println(Arrays.asList(firstHand));
+        System.out.println(Arrays.asList(intFirstHand));
+        System.out.println();
+        System.out.println();
+        System.out.println(Arrays.asList(secondHand));
+        System.out.println(Arrays.asList(intSecondHand));
+
+        if (intFirstHand.get(0).equals(intFirstHand.get(1)) && intSecondHand.get(0).equals(intSecondHand.get(1))){
+                if (intFirstHand.get(0)>intSecondHand.get(0)){
+                    return firstHand;
+                }else{
+                    return secondHand;
+                }
+        }else if (intFirstHand.get(0).equals(intFirstHand.get(1)) && !intSecondHand.get(0).equals(intSecondHand.get(1))){
             return firstHand;
-        } else if ( !firstHand[0].equals(firstHand[1]) && secondHand[0].equals(secondHand[1])) {
+        }else if (!intFirstHand.get(0).equals(intFirstHand.get(1)) && intSecondHand.get(0).equals(intSecondHand.get(1))){
             return secondHand;
         }
-        if (check==true){
-            System.out.println(
-                    "firstHand:" + firstHand[0] + firstHand[1] +
-                    "\nsecondHand" + secondHand[0] + secondHand[1]
-            );
-            for (int i =0; i<secondHand.length; i++){
-                int list = Integer.parseInt(secondHand[i]);
-                int list2 = Integer.parseInt(firstHand[i]);
-                if (list>list2){
-                    return secondHand;
-                }else {
-                    return firstHand;
-                }
-            }
-        }else{
-            return new String[]{};
-        }
+
+
         // Implement the winningPair logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
         return new String[]{};
@@ -44,10 +70,42 @@ public class Poker {
 
     // Extension 1
     public String[] winningPairFromArray(String[][] hands) {
-        // Implement the winningPairFromArray logic here and return the array containing the winning pair to make the tests pass.
-        // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        String[] winningPair = new String[]{};
+        int highestPairValue = 0;
+
+        for (String[] hand : hands) {
+            ArrayList<Integer> intHand = new ArrayList<>();
+
+            // Convert card values to integers
+            for (String card : hand) {
+                int cardValue = getCardValue(card);
+                intHand.add(cardValue);
+            }
+
+            // Check if the hand is a pair and if it's the highest pair so far
+            if (intHand.get(0).equals(intHand.get(1))) {
+                int pairValue = intHand.get(0);
+                if (pairValue > highestPairValue) {
+                    highestPairValue = pairValue;
+                    winningPair = hand;
+                }
+            }
+        }
+
+        return winningPair;
     }
+
+    private int getCardValue(String card) {
+        switch (card) {
+            case "A": return 14;
+            case "K": return 13;
+            case "Q": return 12;
+            case "J": return 11;
+            default:  return Integer.parseInt(card);
+        }
+    }
+
+
 
     // Extension 2
     public String[] winningThreeCardHand(String[][] hands) {
