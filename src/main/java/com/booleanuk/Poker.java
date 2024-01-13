@@ -168,7 +168,7 @@ public class Poker {
             return new String[]{};
         }
 
-        return winningHandIndex != -1 ? hands[winningHandIndex] : new String[]{};
+        return hands[winningHandIndex];
     }
 
 
