@@ -1,5 +1,8 @@
 package com.booleanuk;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Poker {
     // Core
     public String[] winningPair(String[] firstHand, String[] secondHand) {
@@ -56,20 +59,75 @@ public class Poker {
     public String[] winningPairFromArray(String[][] hands) {
         // Implement the winningPairFromArray logic here and return the array containing the winning pair to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        String[] winningPair = new String[0]; // Initially no winning pair
+        int highestValue = -1;
+
+        for (String[] hand : hands) {
+            int handValue = getHandValue(hand);
+            if (hand[0].equals(hand[1]) && handValue > highestValue) {
+                highestValue = handValue;
+                winningPair = hand;
+            }
+        }
+
+        return winningPair;
+    }
+
+    private int getHandValue(String[] hand) {
+        String card = hand[0]; // Assuming both cards are the same, we can just check one
+        if (card.equals("A")) return 14;
+        if (card.equals("K")) return 13;
+        if (card.equals("Q")) return 12;
+        if (card.equals("J")) return 11;
+        return Integer.parseInt(card);
     }
 
     // Extension 2
     public String[] winningThreeCardHand(String[][] hands) {
         // Implement the winningThreeCardHand logic here and return the array containing the winning hand to make the tests pass.
         // You can replace the following return value with something appropriate
-        return new String[]{"Replace me", "with something else"};
+        String[] winningHand = new String[0];
+        int highestRank = 0; // 0: no hand, 1: pair, 2: three of a kind
+        int highestValue = -1;
+
+        for (String[] hand : hands) {
+            int[] rankAndValue = getHandRankAndValue(hand);
+            if (rankAndValue[0] > highestRank || (rankAndValue[0] == highestRank && rankAndValue[1] > highestValue)) {
+                highestRank = rankAndValue[0];
+                highestValue = rankAndValue[1];
+                winningHand = hand;
+            }
+        }
+
+        return winningHand;
     }
 
+    private int[] getHandRankAndValue(String[] hand) {
+        // Simplified logic; you may need a more complex method for full poker rules
+        HashMap<String, Integer> cardCounts = new HashMap<>();
+        for (String card : hand) {
+            cardCounts.put(card, cardCounts.getOrDefault(card, 0) + 1);
+        }
+
+        int rank = 0;
+        int value = -1;
+        for (Map.Entry<String, Integer> entry : cardCounts.entrySet()) {
+            int cardValue = getHandValue(new String[]{entry.getKey()});
+            if (entry.getValue() == 3) return new int[]{2, cardValue}; // Three of a kind
+            if (entry.getValue() == 2 && rank < 1) {
+                rank = 1;
+                value = cardValue;
+            }
+        }
+
+        return new int[]{rank, value};
+
+    }
     // Extension 3
     public String extensionThreeMethods() {
         // Completely replace this method with suitable methods to solve Extension 3
         // You will also need to add the relevant tests to Extension3Test.java
         return "Replace this method with your own methods and tests";
     }
+
 }
