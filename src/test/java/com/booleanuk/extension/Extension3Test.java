@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 
 public class Extension3Test {
     @Test
-    public void shouldPass() {
+    public void moreHandsOfThree() {
         Poker poker = new Poker();
-        Assertions.assertEquals("Replace this method with your own methods and tests", poker.extensionThreeMethods());
+        String[][] hands = {new String[]{"7", "2", "8"}, new String[]{"A", "J", "Q"}, new String[]{"2", "5", "3"}};
+        String[] result = poker.extensionThreeMethods(hands);
+        Assertions.assertArrayEquals(new String[]{}, result);
     }
 }
